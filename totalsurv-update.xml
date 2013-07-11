@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+   <update>
+      <name>TotalSurv</name>
+      <description>TotalSurv Component</description>
+
+      <element>com_totalsurv</element>
+      <type>component</type>
+      <version>1.5.0</version>
+ 
+      <infourl title="TotalSurv URL">http://manuellopezlara.com</infourl>
+      <downloads>
+         <downloadurl type="full" format="tgz">http://manuellopezlara.com/files/com_totalsurv-1.0-final.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+ 
+      <maintainer>TotalSurv Inc.</maintainer>
+      <maintainerurl>http://manuellopezlara.com</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="3.0" />
+   </update>
+ 
+    <update>
+      <name>TotalSurv</name>
+      <description>TotalSurv Component</description>
+      <element>com_totalsurv</element>
+      <type>component</type>
+      <version>1.5.1</version>
+ 
+      <infourl title="HalloWorld URL">http://manuellopezlara.com</infourl>
+      <downloads>
+         <downloadurl type="full" format="tgz">http://manuellopezlara.com/files/com_totalsurv-1.1-final.zip</downloadurl>
+      </downloads>
+      <tags>
+         <tag>some-tag</tag>
+      </tags>
+ 
+      <maintainer>TotalSurv Inc.</maintainer>
+      <maintainerurl>http://manuellopezlara.com</maintainerurl>
+      <section>some-section</section>
+      <targetplatform name="joomla" version="3.0" />
+   </update>
+ 
+</updates>
