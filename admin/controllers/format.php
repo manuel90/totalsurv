@@ -63,4 +63,14 @@ class TotalSurvControllerFormat extends JControllerAdmin
     function cancel() {
         $this->setRedirect(URL_HOME.'&view=format');
     }
+
+    function allformats() {
+
+        $model = $this->getModel('format');
+
+        $data = $model->get_all_formats();
+
+        echo json_encode($data);
+        die();
+    }
 }

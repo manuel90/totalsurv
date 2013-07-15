@@ -12,20 +12,54 @@ defined('_JEXEC') or die('Restricted Access');
 // load tooltip behavior
 JHtml::_('behavior.tooltip');
 ?>
-<form action="<?php echo URL_HOME; ?>" method="post" name="adminForm" id="adminForm">
-    	<table class="table table-striped">
-    		<thead>
-                <th class="width"></th>
-                <th><?php echo ''; ?></th>
-                <th></th>
-                <th></th>
-            </thead>
-    		<tfoot></tfoot>
-    		<tbody></tbody>
-    	</table>
+<form action="<?php echo URL_HOME_ADMIN; ?>" method="post" name="adminForm" id="adminForm">
+    	<div id="grid_formats"></div>
     	<div>
     		<input type="hidden" name="task" value="" />
     		<input type="hidden" name="boxchecked" value="0" />
     		<?php echo JHtml::_('form.token'); ?>
     	</div>
 </form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var crudServiceBaseUrl = "<?php echo URL_HOME_ADMIN; ?>",
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: crudServiceBaseUrl + "&task=format.allformats",
+                    dataType: "json"
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {models: kendo.stringify(options.models)};
+                    }
+                }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { type: "number", editable: false, nullable: true },
+                        code: { validation: { required: true } },
+                        name: { type: "string", validation: { required: true, min: 1} },
+                        version: { type: "string" },
+                        ordered: { type: "number", validation: { min: 0, required: true } }
+                    }
+                }
+            }
+        });
+
+        $("#grid_formats").kendoGrid({
+            dataSource: dataSource,
+            height: 430,
+            scrollable: true,
+            sortable: true,
+            filterable: true,
+            pageable: true,
+            selectable: true,
+            columns: <?php echo $this->columns; ?>
+        });
+    });
+</script>

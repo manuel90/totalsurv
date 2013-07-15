@@ -23,17 +23,37 @@ class TotalSurvViewFormat extends JViewLegacy
 	 * display method of Format view
 	 * @return void
 	 */
-	public function display($tpl = null) 
-	{
-        $id = JRequest::getInt('cid',0);
+	public function display($tpl = null) {
+
+		$layout = JRequest::getCmd('layout','');
+
+		$id = JRequest::getInt('cid',0);
 		
         $model = $this->getModel();
         
         $this->format = $model->load($id);
+
+		if($layout == 'edit') {
+
+		} else {
+
+			$all_formats = $model->get_all_formats();
+
+			$columns = $model->getColumnsGrid('');
+
+			$json_columns  = json_encode($columns);
+
+			
+			$this->assignRef('all_formats',$all_formats);
+
+			$this->assignRef('columns',$json_columns);
+						
+		}
+
+        
 		// Set the toolbar
 		$this->addToolBar();
- 
-		// Display the template
+
 		parent::display($tpl);
  
 		// Set the document
