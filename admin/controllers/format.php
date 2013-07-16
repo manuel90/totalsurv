@@ -27,7 +27,7 @@ class TotalSurvControllerFormat extends JControllerAdmin
         $this->setRedirect('index.php?option=com_totalsurv&view=format&layout=edit');
     }
     function home() {
-        $this->setRedirect(URL_HOME);
+        $this->setRedirect(URL_HOME_ADMIN);
     }
     function publish() {
         
@@ -61,15 +61,12 @@ class TotalSurvControllerFormat extends JControllerAdmin
         $this->home();
     }
     function cancel() {
-        $this->setRedirect(URL_HOME.'&view=format');
+        $this->setRedirect(URL_HOME_ADMIN.'&view=format');
     }
 
     function allformats() {
-
         $model = $this->getModel('format');
-
         $data = $model->get_all_formats();
-
         echo json_encode($data);
         die();
     }

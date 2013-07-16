@@ -16,7 +16,7 @@ jimport('joomla.table.table');
 /**
  * Format Table class
  */
-class TotalSurvTableFormat extends JTable
+class TotalSurvTableQuestion extends JTable
 {
 	/**
 	 * Constructor
@@ -25,6 +25,6 @@ class TotalSurvTableFormat extends JTable
 	 */
 	function __construct(&$db) 
 	{
-		parent::__construct('#__totalsurv_format', 'id', $db);
+		parent::__construct(TotalSurvCustomFunctions::getNameTableQuestions(), 'id', $db);
 	}
 }

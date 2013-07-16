@@ -1,0 +1,10 @@
+.row-form { display: block;margin: 10px 0; }
+
+.row-form > div { display: inline-table; }
+.row-form .label { min-width: 150px;text-align: right;margin-right: 10px; }
+.row-form .input { min-width: 300px; }
+
+.form-totalsurv .column { display: inline-table; }
+
+.form-totalsurv #inputs-format { min-width: 500px; }
+.form-totalsurv #panel-edit-format { width: 500px; }

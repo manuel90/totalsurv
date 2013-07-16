@@ -22,11 +22,11 @@ JHtml::_('behavior.tooltip');
 </form>
 <script type="text/javascript">
     $(document).ready(function() {
-        var crudServiceBaseUrl = "<?php echo URL_HOME_ADMIN; ?>",
-        dataSource = new kendo.data.DataSource({
+        var crudServiceBaseUrl = "<?php echo URL_HOME_ADMIN; ?>";
+        var dataSource = new kendo.data.DataSource({
             transport: {
                 read:  {
-                    url: crudServiceBaseUrl + "&task=format.allformats",
+                    url: crudServiceBaseUrl + " &task=format.allformats",
                     dataType: "json"
                 },
                 parameterMap: function(options, operation) {
@@ -36,16 +36,17 @@ JHtml::_('behavior.tooltip');
                 }
             },
             batch: true,
-            pageSize: 20,
+            pageSize: 25,
             schema: {
                 model: {
                     id: "id",
                     fields: {
                         id: { type: "number", editable: false, nullable: true },
                         code: { validation: { required: true } },
-                        name: { type: "string", validation: { required: true, min: 1} },
                         version: { type: "string" },
-                        ordered: { type: "number", validation: { min: 0, required: true } }
+                        name: { type: "string", validation: { required: true, min: 1} },
+                        published: { type: "boolean" },
+                        ordered: { type: "number" }
                     }
                 }
             }
@@ -53,13 +54,25 @@ JHtml::_('behavior.tooltip');
 
         $("#grid_formats").kendoGrid({
             dataSource: dataSource,
-            height: 430,
+            height: 500,
             scrollable: true,
             sortable: true,
             filterable: true,
             pageable: true,
             selectable: true,
-            columns: <?php echo $this->columns; ?>
+            columns: [
+                        <?php echo $this->columns; ?>,
+                        { command: { text: "<?php echo JText::_('VIEW_FORMAT_LABEL_EDIT'); ?>", click: editFormat }, title: '', width: '80px' },
+                        { command: { text: "<?php echo JText::_('VIEW_FORMAT_LABEL_DELETE'); ?>", click: deleteFormat }, title: '', width: '80px' }
+                    ]
         });
+        function deleteFormat(e) {
+            e.preventDefault();
+        }
+        function editFormat(e) {
+            e.preventDefault();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            window.location.href = "<?php echo $this->url_edit; ?>".replace('{fid}',dataItem.id);
+        }
     });
 </script>

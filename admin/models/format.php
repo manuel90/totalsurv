@@ -20,7 +20,7 @@ jimport('joomla.application.component.modeladmin');
 class TotalSurvModelFormat extends JModelAdmin
 {
     var $format;
-    VAR $table_name = '#__totalsurv_format';
+    Var $table_name = '#__totalsurv_format';
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -61,69 +61,35 @@ class TotalSurvModelFormat extends JModelAdmin
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = 'totalsurv_format', $prefix = 'TotalSurvTable', $config = array()) 
+	public function getTable($type = 'Format', $prefix = 'TotalSurvTable', $config = array()) 
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
     
-    function load($id = 0) {
-        $format = new stdClass();
-        if( empty($id) ) {
-            
-            if( !empty($this->format) ) {
-                return $this->format;
-            }
-            
-            // default values
-            $format->id = 0;
-            $format->code = null;
-            $format->version = null;
-            $format->name = '';
-            $format->comented = 0;
-            $format->published = 0;
-            $format->min_value = 0;
-            $format->max_value = 5;
-            $format->date_create = '00-00-0000';
-            $format->text_info_value = '';
-            $format->enable_send_info = 0;
-            $format->range_low = 0;
-            $format->range_medium = 0;
-            $format->range_high = 0;
-            $format->range_very_high = 0;
-            $format->order = 0;
-            return $format;
+    function load($fid = 0) {
+
+        if( empty($fid) && !empty($this->format)) {
+            return $this->format;
         }
-        
+        if( empty($this->format) ) {
+            $this->format = $this->getColumns();
+        }
+
         $table = $this->getTable();
         
-        if($table->load($id)) {
-            return $table;
+        if($table->load($fid)) {
+            $this->format = TotalSurvCustomFunctions::parse_args($table,$this->format);
+            return $this->format;
         }
-        return null;
+
+        return $this->format;
     }
     
     function store($data = null) {
         if( empty($data) ) {
             return false;
         }
-        $default = array(
-            'id' => null,
-            'code' => null,
-            'version' => '',
-            'name' => '',
-            'comented' => 0,
-            'published' => 0,
-            'min_value' => 1,
-            'max_value' => 5,
-            'date_create' => '00-00-0000',
-            'text_info_value' => '',
-            'enable_send_info' => 0,
-            'range_low' => 0,
-            'range_medium' => 0,
-            'range_high' => 0,
-            'range_very_high' => 0,
-            'order' => 0
-        );
+        $default = $this->getColumns();
         
         $source = TotalSurvCustomFunctions::parse_args($data,$default);
         $table = $this->getTable();
@@ -143,47 +109,51 @@ class TotalSurvModelFormat extends JModelAdmin
             $sql_limit = ' LIMIT '.$start.', '.$limit;
         }
 
-        $query = 'SELECT '.$this->getColumns().' FROM '.$this->table_name.$sql_limit.' ORDER BY '.$orderby.' '.$ordered.';';
+        $query = 'SELECT '.$this->getColumns(true).' FROM '.$this->table_name.$sql_limit.' ORDER BY '.$orderby.' '.$ordered.';';
 
         $db->setQuery($query);
         $list = $db->loadAssocList();
+        if( !empty($list) ) {
+            foreach($list as &$item) {
+                $item['published'] = (bool)$item['published'];
+            }
+        }
         return $list;
     }
 
-
-    public function getColumns($prefix = '',$implode = true) {
+    public function getColumns($implode = false,$prefix = '') {
 
         $columns = array(
-            $prefix.'id' => array('title' => 'ID', 'type' => 'number'),
-            $prefix.'code' => 0,
-            $prefix.'version' => array('title' => 'ID', 'type' => 'number'),
-            $prefix.'name' => array('title' => 'Nombre', 'type' => 'string'),
-            $prefix.'comented' => 0,
-            $prefix.'published' => array('title' => 'Publicado', 'type' => 'number'),
-            $prefix.'min_value' => 0,
-            $prefix.'max_value' => 0,
-            $prefix.'date_create' => 0,
+            $prefix.'id' => null,
+            $prefix.'code' => null,
+            $prefix.'version' => '',
+            $prefix.'name' => '',
+            $prefix.'commented' => 0,
+            $prefix.'published' => 0,
+            $prefix.'min_value' => 1,
+            $prefix.'max_value' => 5,
+            $prefix.'date_create' => '00-00-0000',
             $prefix.'text_info_value' => 0,
             $prefix.'enable_send_info' => 0,
             $prefix.'range_low' => 0,
             $prefix.'range_medium' => 0,
             $prefix.'range_high' => 0,
             $prefix.'range_very_high' => 0,
-            $prefix.'ordered' => array('title' => 'Orden', 'type' => 'number')
-            );
+            $prefix.'ordered' => 0
+        );
         return $implode ? implode(',',array_keys($columns)) : $columns;
     }
 
-    public function getColumnsGrid($prefix = '') {
+    public function getColumnsGrid($json = false,$prefix = '') {
 
         $columns = array(
-            array('field' => $prefix.'id', 'title' => 'ID','filterable' => false),
-            array('field' => $prefix.'code', 'title' => 'Codigo'),
-            array('field' => $prefix.'version', 'title' => 'Version','filterable' => false),
-            array('field' => $prefix.'name', 'title' => 'Nombre'),
-            array('field' => $prefix.'published', 'title' => 'Publicado','filterable' => false),
-            array('field' => $prefix.'ordered', 'title' => 'Orden','filterable' => false)
+            array('field' => $prefix.'id', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_ID'),'filterable' => false, 'width' => '50px'),
+            array('field' => $prefix.'code', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_CODE'), 'width' => '50px'),
+            array('field' => $prefix.'version', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_VERSION'), 'filterable' => false, 'width' => '50px'),
+            array('field' => $prefix.'name', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_NAME'), 'width' => '400px'),
+            array('field' => $prefix.'published', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_PUBLISHED'), 'filterable' => false, 'width' => '50px'),
+            array('field' => $prefix.'ordered', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_ORDERED'), 'filterable' => false, 'width' => '50px')
         );
-        return $implode ? implode(',',array_keys($columns)) : $columns;
+        return $json ? substr(json_encode($columns), 1,-1) : $columns;
     }
 }

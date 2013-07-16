@@ -9,52 +9,151 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', '.chzn-select');
-JHtml::_('jquery.ui', array('core', 'sortable'));
+jimport( 'joomla.html.html.select' );
+
+
+$options = array();
+
+$options[] = JHTML::_('select.option','1',JText::_('COM_TOTALSURV_YES'));
+$options[] = JHTML::_('select.option','0',JText::_('COM_TOTALSURV_NO'));
+
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_totalsurv&view=format&layout=edit&id='.(int) $this->format->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-	<fieldset>
-        <legend><?php echo JText::_('VIEW_FORMAT_LEGEND_DETAILS'); ?></legend>
-        <small><?php echo JText::_('COM_TOTALSURV_REQUIRED'); ?></small>
-        
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_CODE'); ?></label>
-        <input type="text" placeholder="" class="required"/>
-        
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_VERSION'); ?></label>
-        <input type="text" placeholder="" class="required"/>
-        
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_NAME'); ?></label>
-        <input type="text" placeholder="" class="required"/>
-        
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_PUBLISHING'); ?></label>
-        <fieldset id="fieldset_published" class="radio btn-group">
-            <input type="radio" id="published1" name="published" value="1" />
-            <label for="published1" class="btn"><?php echo JText::_('COM_TOTALSURV_YES'); ?></label>
-            <input type="radio" id="published2" name="published" value="0" checked="checked" />
-            <label for="published2" class="btn"><?php echo JText::_('COM_TOTALSURV_NO'); ?></label>
-        </fieldset>
-        
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_COMMENTED'); ?></label>
-        <fieldset id="fieldset_comented" class="radio btn-group">
-            <input type="radio" id="comented1" name="comented" value="1" />
-            <label for="comented1" class="btn"><?php echo JText::_('COM_TOTALSURV_YES'); ?></label>
-            <input type="radio" id="comented2" name="comented" value="0" checked="checked" />
-            <label for="comented2" class="btn"><?php echo JText::_('COM_TOTALSURV_NO'); ?></label>
-        </fieldset>
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_MIN_VALUE'); ?></label>
-        <input id="min_value" name="min_value" value="1" />
-        <label><?php echo JText::_('VIEW_FORMAT_LABEL_MAX_VALUE'); ?></label>
-        
-    </fieldset>
-    <div>
-		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+<form action="<?php echo URL_HOME_ADMIN.'&view=format&layout=edit&fid='.(int) $this->format['id']; ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-totalsurv">
+	<div id="inputs-format" class="column">
+        <h4><?php echo JText::_('COM_TOTALSURV_REQUIRED'); ?></h4>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_code"><?php echo JText::_('VIEW_FORMAT_LABEL_CODE'); ?></label>
+            </div>
+            <div class="input">
+                <input type="text" id="format_code" value="<?php echo $this->format['code']; ?>" name="format_code" class="k-textbox required" />
+            </div>
+        </div>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_version"><?php echo JText::_('VIEW_FORMAT_LABEL_VERSION'); ?></label>
+            </div>
+            <div class="input">
+                <input type="text" id="format_version" value="<?php echo $this->format['version']; ?>" name="format_version" class="k-textbox required" />
+            </div>
+        </div>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_name"><?php echo JText::_('VIEW_FORMAT_LABEL_NAME'); ?></label>
+            </div>
+            <div class="input">
+                <input type="text" id="format_name" value="<?php echo $this->format['name']; ?>" name="format_name" class="k-textbox required" />
+            </div>
+        </div>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_publishing"><?php echo JText::_('VIEW_FORMAT_LABEL_PUBLISHING'); ?></label>
+            </div>
+            <div class="input">
+                <?php echo JHtml::_('select.genericlist',$options, 'format_publishing', 'class="example"', 'value', 'text', $this->format['published'], 'format_publishing'); ?>
+            </div>
+        </div>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_commented"><?php echo JText::_('VIEW_FORMAT_LABEL_COMMENTED'); ?></label>
+            </div>
+            <div class="input">
+                <?php echo JHtml::_('select.genericlist',$options, 'format_commented', 'class="example"', 'value', 'text', $this->format['commented'], 'format_commented'); ?>
+            </div>
+        </div>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_minvalue"><?php echo JText::_('VIEW_FORMAT_LABEL_MIN_VALUE'); ?></label>
+            </div>
+            <div class="input">
+                <input type="text" id="format_minvalue" value="<?php echo $this->format['min_value']; ?>" name="format_minvalue" class="required" />
+            </div>
+        </div>
+        <div class="row-form">
+            <div class="label">
+                <label for="format_maxvalue"><?php echo JText::_('VIEW_FORMAT_LABEL_MAX_VALUE'); ?></label>
+            </div>
+            <div class="input">
+                <input type="text" id="format_maxvalue" value="<?php echo $this->format['max_value']; ?>" name="format_maxvalue" class="required" />
+            </div>
+        </div>
+    </div>
+    <div id="panel-edit-format" class="column">
+
+        <div id="grid-questions">
+
+        </div>  
+    </div>
+	<input type="hidden" name="task" value="" />
+	<?php echo JHtml::_('form.token'); ?>
     <script type="text/javascript">
-        jQuery(document).on('ready', function(){
-            jQuery('#min_value').spinner({min: 1});
+        var fid = '<?php echo $this->format['id'];?>';
+        $(document).on('ready', function(){
+            $("#format_publishing").kendoDropDownList();
+            $("#format_commented").kendoDropDownList();
+
+            $("#format_minvalue").kendoNumericTextBox({format: "#",min: 1,max: 5,step: 1});
+            $("#format_maxvalue").kendoNumericTextBox({format: "#",min: 1,max: 5,step: 1});
+
+            var crudServiceBaseUrl = "<?php echo URL_HOME_ADMIN; ?>";
+
+            /**
+             * Scripts Questions
+             *****/
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read:  {
+                        url: crudServiceBaseUrl + "&task=question.ajaxQuestionByFormat&fid="+fid,
+                        dataType: "json"
+                    },
+                    update: {
+                        url: crudServiceBaseUrl + "&task=question.ajaxupdate",
+                        dataType: "json"
+                    },
+                    destroy: {
+                        url: crudServiceBaseUrl + "&task=question.ajaxdelete",
+                        dataType: "json"
+                    },
+                    create: {
+                        url: crudServiceBaseUrl + "&task=question.ajaxnew&fid="+fid,
+                        dataType: "json"
+                    },
+                    parameterMap: function(options, operation) {
+                        if (operation !== "read" && options.models) {
+                            return {models: kendo.stringify(options.models)};
+                        }
+                    }
+                },
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    model: {
+                        id: "id",
+                        fields: {
+                            id: { editable: false, nullable: true },
+                            name: { validation: { required: true } },
+                            published: { type: "boolean" },
+                            ordered: { type: "number" }
+                        }
+                    }
+                }
+            });
+
+            $("#grid-questions").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 430,
+                width: 450,
+                filterable: true,
+                toolbar: ["create"],
+                columns: [
+                    <?php echo TotalSurvCustomFunctions::getColumnsGridQuestion(true); ?>,
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "160px" }],
+                editable: "popup"
+            });
+            /**
+             * END Scripts Questions
+             *********************************************************************************/
         });
     </script>
 </form>

@@ -18,6 +18,8 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_totalsurv'))
 }
 
 require_once('defines.totalsurv.php');
+
+TotalSurvCustomFunctions::load();
  
 // require helper file
 JLoader::register('TotalSurvHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'totalsurv.php');
@@ -25,10 +27,18 @@ JLoader::register('TotalSurvHelper', dirname(__FILE__) . DS . 'helpers' . DS . '
 // import joomla controller library
 jimport('joomla.application.component.controller');
  
+
+$execute = $task = JRequest::getCmd('task');
+
 // Get an instance of the controller prefixed by TotalSurv
 $controller = JControllerLegacy::getInstance('TotalSurv');
+
+if($task && (bool)strpos($task,'.')) {
+	list($controller,$execute) = explode('.',$task);
+	$controller = JControllerLegacy::getInstance($controller);
+}
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute($execute);
  
 // Redirect if set by the controller
 $controller->redirect();

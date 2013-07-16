@@ -27,11 +27,13 @@ class TotalSurvViewFormat extends JViewLegacy
 
 		$layout = JRequest::getCmd('layout','');
 
-		$id = JRequest::getInt('cid',0);
+		$fid = JRequest::getInt('fid', 0);
 		
         $model = $this->getModel();
         
-        $this->format = $model->load($id);
+        $this->format = $model->load($fid);
+
+
 
 		if($layout == 'edit') {
 
@@ -39,14 +41,13 @@ class TotalSurvViewFormat extends JViewLegacy
 
 			$all_formats = $model->get_all_formats();
 
-			$columns = $model->getColumnsGrid('');
-
-			$json_columns  = json_encode($columns);
-
+			$json_columns = $model->getColumnsGrid(true);
 			
-			$this->assignRef('all_formats',$all_formats);
+			$url_edit = URL_HOME_ADMIN.'&view=format&layout=edit&fid={fid}';
 
+			$this->assignRef('all_formats',$all_formats);
 			$this->assignRef('columns',$json_columns);
+			$this->assignRef('url_edit', $url_edit);
 						
 		}
 
@@ -65,23 +66,21 @@ class TotalSurvViewFormat extends JViewLegacy
 	 */
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		
 		$user = JFactory::getUser();
 		$userId = $user->id;
-		$isNew = $this->format->id == 0;
+		$isNew = $this->format['id'] == 0;
 		
         $layout = JRequest::getCmd('layout','list');
         if($layout == 'list') {
             JToolBarHelper::title(JText::_('VIEW_FORMAT_LABEL_TITLE_LIST'));
             JToolBarHelper::custom('format.home', 'home.png', 'home_f2.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
             JToolBarHelper::custom('format.add', 'new.png', 'new_f2.png', 'VIEW_FORMAT_LABEL_NEW', false);
-            JToolBarHelper::custom('format.edit', 'edit.png', 'edit_f2.png', 'VIEW_FORMAT_LABEL_EDIT', false);
             JToolBarHelper::custom('format.publish', 'publish.png', 'publish_f2.png', 'VIEW_FORMAT_LABEL_PUBLISH', false);
             JToolBarHelper::custom('format.unpublish', 'unpublish.png', 'unpublish_f2.png', 'VIEW_FORMAT_LABEL_UNPUBLISH', false);
-            JToolBarHelper::custom('format.trash', 'trash.png', 'trash_f2.png', 'VIEW_FORMAT_LABEL_TRASH', false);
             return;
         }
-        
+        JRequest::setVar('hidemainmenu', true);
         
         $canDo = TotalSurvHelper::getActions($this->format->id);
 		JToolBarHelper::title($isNew ? JText::_('VIEW_FORMAT_LABEL_TITLE_NEW') : JText::_('VIEW_FORMAT_LABEL_TITLE_EDIT'), 'format');
@@ -104,16 +103,6 @@ class TotalSurvViewFormat extends JViewLegacy
 				// We can save the new record
 				JToolBarHelper::apply('format.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save('format.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
-				{
-					JToolBarHelper::custom('format.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::custom('format.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
 			JToolBarHelper::cancel('format.cancel', 'JTOOLBAR_CLOSE');
 		}
