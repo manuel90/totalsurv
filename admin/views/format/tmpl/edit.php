@@ -79,10 +79,12 @@ $options[] = JHTML::_('select.option','0',JText::_('COM_TOTALSURV_NO'));
         </div>
     </div>
     <div id="panel-edit-format" class="column">
-
-        <div id="grid-questions">
-
-        </div>  
+        <h3><?php echo JText::_('LAYOUT_EDIT_TITLE_QUESTIONOPTION_BEFORE'); ?></h3>
+        <div id="grid-questionsoption-before"></div>
+        <h3><?php echo JText::_('LAYOUT_EDIT_TITLE_QUESTION'); ?></h3>
+        <div id="grid-questions"></div>
+        <h3><?php echo JText::_('LAYOUT_EDIT_TITLE_QUESTIONOPTION_AFTER'); ?></h3>
+        <div id="grid-questionsoption-after"></div>
     </div>
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
@@ -138,12 +140,10 @@ $options[] = JHTML::_('select.option','0',JText::_('COM_TOTALSURV_NO'));
                     }
                 }
             });
-
             $("#grid-questions").kendoGrid({
                 dataSource: dataSource,
                 pageable: true,
                 height: 430,
-                width: 450,
                 filterable: true,
                 toolbar: ["create"],
                 columns: [
@@ -154,6 +154,145 @@ $options[] = JHTML::_('select.option','0',JText::_('COM_TOTALSURV_NO'));
             /**
              * END Scripts Questions
              *********************************************************************************/
+
+            /**
+             * Scripts Questions Before
+             *****/
+            var dialog = $('#dialog');
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read:  {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxQuestionsOptionByFormat&position_survey=before&fid="+fid,
+                        dataType: "json"
+                    },
+                    update: {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxupdate",
+                        dataType: "json"
+                    },
+                    destroy: {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxdelete",
+                        dataType: "json"
+                    },
+                    create: {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxnew&fid="+fid,
+                        dataType: "json"
+                    },
+                    parameterMap: function(options, operation) {
+                        if (operation !== "read" && options.models) {
+                            return {models: kendo.stringify(options.models)};
+                        }
+                    }
+                },
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    model: {
+                        id: "id",
+                        fields: {
+                            id: { editable: false, nullable: true },
+                            name: { validation: { required: true } },
+                            published: { type: "boolean" },
+                            type: { type: "number", validation: { min: 1, max: 5 } },
+                            ordered: { type: "number" }
+                        }
+                    }
+                }
+            });
+            $("#grid-questionsoption-before").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 200,
+                filterable: true,
+                toolbar: ["create"],
+                columns: [
+                    <?php echo TotalSurvCustomFunctions::getColumnsGridQuestionOption(true); ?>,
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "160px" },
+                    { command: { text: "<?php echo JText::_('Editar Opciones'); ?>", click: editOptions }, title: '', width: '120px' }
+                ],
+                editable: "popup"
+            });
+            /**
+             * END Scripts Questions Before
+             *********************************************************************************/
+
+            /**
+             * Scripts Questions After
+             *****/
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read:  {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxQuestionsOptionByFormat&position_survey=after&fid="+fid,
+                        dataType: "json"
+                    },
+                    update: {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxupdate",
+                        dataType: "json"
+                    },
+                    destroy: {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxdelete",
+                        dataType: "json"
+                    },
+                    create: {
+                        url: crudServiceBaseUrl + "&task=questionoption.ajaxnew&fid="+fid,
+                        dataType: "json"
+                    },
+                    parameterMap: function(options, operation) {
+                        if (operation !== "read" && options.models) {
+                            return {models: kendo.stringify(options.models)};
+                        }
+                    }
+                },
+                batch: true,
+                pageSize: 20,
+                schema: {
+                    model: {
+                        id: "id",
+                        fields: {
+                            id: { editable: false, nullable: true },
+                            name: { validation: { required: true } },
+                            published: { type: "boolean" },
+                            type: { type: "number", validation: { min: 1, max: 5 } },
+                            ordered: { type: "number" }
+                        }
+                    }
+                }
+            });
+            $("#grid-questionsoption-after").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 200,
+                filterable: true,
+                toolbar: ["create"],
+                columns: [
+                    <?php echo TotalSurvCustomFunctions::getColumnsGridQuestionOption(true); ?>,
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "160px" },
+                    { command: { text: "<?php echo JText::_('Editar Opciones'); ?>", click: editOptions }, title: '', width: '120px' }
+                ],
+                editable: "popup"
+            });
+
+
+            function editOptions(e) {
+                e.preventDefault();
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                var qo_id = dataItem.id;
+                
+                dialog.kendoWindow({
+                    width: "615px",
+                    height: "400px",
+                    title: "Editar Opciones",
+                    content: crudServiceBaseUrl + "&view=optionquestion&tmpl=component&qo_id="+qo_id,
+                    modal: true
+                });
+                dialog.data("kendoWindow").center();
+            }
+
+            /**
+             * END Scripts Questions After
+             *********************************************************************************/
+
+
         });
     </script>
 </form>
+<div id="dialog"></div>
