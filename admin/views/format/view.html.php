@@ -25,29 +25,36 @@ class TotalSurvViewFormat extends JViewLegacy
 	 */
 	public function display($tpl = null) {
 
-		$layout = JRequest::getCmd('layout','');
+		$layout = JRequest::getCmd('layout','list');
 
-		$fid = JRequest::getInt('fid', 0);
 		
         $model = $this->getModel();
         
-        $this->format = $model->load($fid);
+        
 
+        $document = JFactory::getDocument();
 
 
 		if($layout == 'edit') {
+			$fid = JRequest::getInt('fid', 0);
+			$this->format = $model->load($fid);
 
+			$document->addScriptDeclaration('var fid = \''.$this->format['id'].'\';');
+			$document->addScriptDeclaration('var getColumnsGridQuestion = ['.TotalSurvCustomFunctions::getColumnsGridQuestion(true).'];');
+			$document->addScriptDeclaration('var getColumnsGridQuestionOption = ['.TotalSurvCustomFunctions::getColumnsGridQuestionOption(true).'];');
+
+			JText::script('LAYOUT_EDIT_UPDATE_OPTIONS');
+			
 		} else {
 
-			$all_formats = $model->get_all_formats();
+			/**
+			 * List General to the formats
+			 ***/
+			JText::script('VIEW_FORMAT_LABEL_EDIT');
+			JText::script('VIEW_FORMAT_LABEL_DELETE');
 
-			$json_columns = $model->getColumnsGrid(true);
-			
-			$url_edit = URL_HOME_ADMIN.'&view=format&layout=edit&fid={fid}';
-
-			$this->assignRef('all_formats',$all_formats);
-			$this->assignRef('columns',$json_columns);
-			$this->assignRef('url_edit', $url_edit);
+			$document->addScriptDeclaration('var getColumnsGridFormat = ['.TotalSurvCustomFunctions::getColumnsGridFormat(true).'];');
+			$document->addScriptDeclaration('var tsurv_url_edit_format = \''.URL_HOME_ADMIN.'&view=format&layout=edit&fid={fid}\';');
 						
 		}
 

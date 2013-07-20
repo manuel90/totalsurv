@@ -46,8 +46,57 @@ class TotalSurvCustomFunctions {
 
         $document->addScript(URL_FOLDER_ADMIN.'/libraries/kendoui/js/kendo.web.min.js');
         $document->addScript(URL_FOLDER_ADMIN.'/libraries/kendoui/js/cultures/kendo.culture.es-ES.min.js');
-        $document->addScriptDeclaration('kendo.culture("es-ES");');
+        
+
+        $crudServiceBaseUrl = URL_HOME_ADMIN;
+        $vars_js = <<<JS
+        kendo.culture("es-ES");
+        var crudServiceBaseUrl = '$crudServiceBaseUrl';
+JS;
+        $document->addScriptDeclaration($vars_js);
     
+    }
+
+    /**
+     * Table Format
+     *****/
+    public static function getNameTableFormat() {
+        return '#__totalsurv_format';
+    }
+    public function getColumnsTableFormat($implode = false,$prefix = '') {
+
+        $columns = array(
+            $prefix.'id' => null,
+            $prefix.'code' => null,
+            $prefix.'version' => '',
+            $prefix.'name' => '',
+            $prefix.'commented' => 0,
+            $prefix.'published' => 0,
+            $prefix.'min_value' => 1,
+            $prefix.'max_value' => 5,
+            $prefix.'date_create' => '00-00-0000',
+            $prefix.'text_info_value' => 0,
+            $prefix.'enable_send_info' => 0,
+            $prefix.'range_low' => 0,
+            $prefix.'range_medium' => 0,
+            $prefix.'range_high' => 0,
+            $prefix.'range_very_high' => 0,
+            $prefix.'ordered' => 0
+        );
+        return $implode ? implode(',',array_keys($columns)) : $columns;
+    }
+
+    public function getColumnsGridFormat($json = false,$prefix = '') {
+
+        $columns = array(
+            array('field' => $prefix.'id', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_ID'),'filterable' => false, 'width' => '50px'),
+            array('field' => $prefix.'code', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_CODE'), 'width' => '50px'),
+            array('field' => $prefix.'version', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_VERSION'), 'filterable' => false, 'width' => '50px'),
+            array('field' => $prefix.'name', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_NAME'), 'width' => '400px'),
+            array('field' => $prefix.'published', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_PUBLISHED'), 'filterable' => false, 'width' => '50px'),
+            array('field' => $prefix.'ordered', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_ORDERED'), 'filterable' => false, 'width' => '50px')
+        );
+        return $json ? substr(json_encode($columns), 1,-1) : $columns;
     }
 
     /**

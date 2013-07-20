@@ -22,7 +22,6 @@ JHtml::_('behavior.tooltip');
 </form>
 <script type="text/javascript">
     $(document).ready(function() {
-        var crudServiceBaseUrl = "<?php echo URL_HOME_ADMIN; ?>";
         var dataSource = new kendo.data.DataSource({
             transport: {
                 read:  {
@@ -51,7 +50,8 @@ JHtml::_('behavior.tooltip');
                 }
             }
         });
-
+        getColumnsGridFormat.push({ command: { text: Joomla.JText.strings.VIEW_FORMAT_LABEL_EDIT, click: editFormat }, title: '', width: '80px' });
+        getColumnsGridFormat.push({ command: { text: Joomla.JText.strings.VIEW_FORMAT_LABEL_DELETE, click: deleteFormat }, title: '', width: '80px' });
         $("#grid_formats").kendoGrid({
             dataSource: dataSource,
             height: 500,
@@ -60,11 +60,7 @@ JHtml::_('behavior.tooltip');
             filterable: true,
             pageable: true,
             selectable: true,
-            columns: [
-                        <?php echo $this->columns; ?>,
-                        { command: { text: "<?php echo JText::_('VIEW_FORMAT_LABEL_EDIT'); ?>", click: editFormat }, title: '', width: '80px' },
-                        { command: { text: "<?php echo JText::_('VIEW_FORMAT_LABEL_DELETE'); ?>", click: deleteFormat }, title: '', width: '80px' }
-                    ]
+            columns: getColumnsGridFormat
         });
         function deleteFormat(e) {
             e.preventDefault();
@@ -72,7 +68,7 @@ JHtml::_('behavior.tooltip');
         function editFormat(e) {
             e.preventDefault();
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-            window.location.href = "<?php echo $this->url_edit; ?>".replace('{fid}',dataItem.id);
+            window.location.href = tsurv_url_edit_format.replace('{fid}',dataItem.id);
         }
     });
 </script>

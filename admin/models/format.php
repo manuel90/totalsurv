@@ -20,7 +20,6 @@ jimport('joomla.application.component.modeladmin');
 class TotalSurvModelFormat extends JModelAdmin
 {
     var $format;
-    Var $table_name = '#__totalsurv_format';
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -72,7 +71,7 @@ class TotalSurvModelFormat extends JModelAdmin
             return $this->format;
         }
         if( empty($this->format) ) {
-            $this->format = $this->getColumns();
+            $this->format = TotalSurvCustomFunctions::getColumnsTableFormat();
         }
 
         $table = $this->getTable();
@@ -89,15 +88,19 @@ class TotalSurvModelFormat extends JModelAdmin
         if( empty($data) ) {
             return false;
         }
-        $default = $this->getColumns();
+        $default = TotalSurvCustomFunctions::getColumnsTableFormat();
         
-        $source = TotalSurvCustomFunctions::parse_args($data,$default);
+        $update_data = TotalSurvCustomFunctions::parse_args($data,$default);
         $table = $this->getTable();
-        if(!$table->save()) {
+
+        if(!$table->bind($update_data)) {
             return false;
         }
-        $this->format = $table;
-        return true;
+        if($table->store()) {
+            $this->format = TotalSurvCustomFunctions::parse_args($table,$default);
+            return $this->format;
+        }
+        return false;
     }
 
 
@@ -108,8 +111,9 @@ class TotalSurvModelFormat extends JModelAdmin
         if(intVal($limit) > 0 && intVal($start)) {
             $sql_limit = ' LIMIT '.$start.', '.$limit;
         }
-
-        $query = 'SELECT '.$this->getColumns(true).' FROM '.$this->table_name.$sql_limit.' ORDER BY '.$orderby.' '.$ordered.';';
+        $table = TotalSurvCustomFunctions::getNameTableFormat();
+        $columns = TotalSurvCustomFunctions::getColumnsTableFormat(true);
+        $query = 'SELECT '.$columns.' FROM '.$table.$sql_limit.' ORDER BY '.$orderby.' '.$ordered.';';
 
         $db->setQuery($query);
         $list = $db->loadAssocList();
@@ -121,39 +125,5 @@ class TotalSurvModelFormat extends JModelAdmin
         return $list;
     }
 
-    public function getColumns($implode = false,$prefix = '') {
-
-        $columns = array(
-            $prefix.'id' => null,
-            $prefix.'code' => null,
-            $prefix.'version' => '',
-            $prefix.'name' => '',
-            $prefix.'commented' => 0,
-            $prefix.'published' => 0,
-            $prefix.'min_value' => 1,
-            $prefix.'max_value' => 5,
-            $prefix.'date_create' => '00-00-0000',
-            $prefix.'text_info_value' => 0,
-            $prefix.'enable_send_info' => 0,
-            $prefix.'range_low' => 0,
-            $prefix.'range_medium' => 0,
-            $prefix.'range_high' => 0,
-            $prefix.'range_very_high' => 0,
-            $prefix.'ordered' => 0
-        );
-        return $implode ? implode(',',array_keys($columns)) : $columns;
-    }
-
-    public function getColumnsGrid($json = false,$prefix = '') {
-
-        $columns = array(
-            array('field' => $prefix.'id', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_ID'),'filterable' => false, 'width' => '50px'),
-            array('field' => $prefix.'code', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_CODE'), 'width' => '50px'),
-            array('field' => $prefix.'version', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_VERSION'), 'filterable' => false, 'width' => '50px'),
-            array('field' => $prefix.'name', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_NAME'), 'width' => '400px'),
-            array('field' => $prefix.'published', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_PUBLISHED'), 'filterable' => false, 'width' => '50px'),
-            array('field' => $prefix.'ordered', 'title' => JText::_('VIEW_FORMAT_LABEL_COLUMN_ORDERED'), 'filterable' => false, 'width' => '50px')
-        );
-        return $json ? substr(json_encode($columns), 1,-1) : $columns;
-    }
+    
 }
