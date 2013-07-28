@@ -1,11 +1,56 @@
-$(document).on('ready', function(){
-    $("#format_publishing").kendoDropDownList();
-    $("#format_commented").kendoDropDownList();
+Joomla.submitbutton = function(pressbutton) {
 
-    $("#format_minvalue").kendoNumericTextBox({format: "#",min: 1,max: 5,step: 1});
-    $("#format_maxvalue").kendoNumericTextBox({format: "#",min: 1,max: 5,step: 1});
+    var validator = jQuery("#admin-form-totalsurv").kendoValidator().data("kendoValidator");
+    var status = jQuery("#msg-edit-format");
 
+    if(pressbutton == 'format.save' || pressbutton == 'format.apply') {
+        if (!validator.validate()) {
+            status.text("Faltan datos por ingresar.").removeClass("valid").addClass("invalid");
+            return;
+        }
+    }
     
+    submitform(pressbutton);
+
+};
+
+jQuery(document).on('ready', init_editformat_js);
+function init_editformat_js() {
+
+    var editOptions = function(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem(jQuery(e.currentTarget).closest("tr"));
+        var qo_id = dataItem.id;
+        
+
+        if(dataItem.type != 1 && dataItem.type != 2) {
+            var kendoWindow = dialog.data("kendoWindow");
+            kendoWindow.refresh(crudServiceBaseUrl + "&view=optionquestion&tmpl=component&qo_id="+qo_id);
+            kendoWindow.center();
+            kendoWindow.open();
+        }
+    };
+
+    jQuery("#format_text_info_value").kendoEditor({
+        tools: ["bold", "italic", "underline","justifyLeft", "justifyCenter", "justifyRight", "justifyFull"]
+    });
+
+    jQuery("#format_range_low").kendoNumericTextBox({format: "#",min: 1,step: 1});
+    jQuery("#format_range_medium").kendoNumericTextBox({format: "#",min: 1,step: 1});
+    jQuery("#format_range_high").kendoNumericTextBox({format: "#",min: 1,step: 1});
+    jQuery("#format_range_very_high").kendoNumericTextBox({format: "#",min: 1,step: 1});
+
+    jQuery("#format_enable_send_info").kendoDropDownList();
+
+    jQuery("#format_published").kendoDropDownList();
+    jQuery("#format_commented").kendoDropDownList();
+
+    jQuery("#format_minvalue").kendoNumericTextBox({format: "#",min: 1,max: 5,step: 1});
+    jQuery("#format_maxvalue").kendoNumericTextBox({format: "#",min: 1,max: 5,step: 1});
+
+    jQuery("#format_date_create").kendoDatePicker({
+        format: "yyyy-MM-dd"
+    });
 
     /**
      * Scripts Questions
@@ -49,7 +94,7 @@ $(document).on('ready', function(){
         }
     });
     getColumnsGridQuestion.push({ command: ["edit", "destroy"], title: "&nbsp;", width: "160px" });
-    $("#grid-questions").kendoGrid({
+    jQuery("#grid-questions").kendoGrid({
         dataSource: dataSource,
         pageable: true,
         height: 430,
@@ -106,7 +151,7 @@ $(document).on('ready', function(){
     });
     getColumnsGridQuestionOption.push({ command: ["edit", "destroy"], title: "&nbsp;", width: "160px" });
     getColumnsGridQuestionOption.push({ command: { text: Joomla.JText.strings.LAYOUT_EDIT_UPDATE_OPTIONS, click: editOptions }, title: '', width: '120px' });
-    $("#grid-questionsoption-before").kendoGrid({
+    jQuery("#grid-questionsoption-before").kendoGrid({
         dataSource: dataSource,
         pageable: true,
         height: 200,
@@ -161,7 +206,7 @@ $(document).on('ready', function(){
             }
         }
     });
-    $("#grid-questionsoption-after").kendoGrid({
+    jQuery("#grid-questionsoption-after").kendoGrid({
         dataSource: dataSource,
         pageable: true,
         height: 200,
@@ -170,7 +215,7 @@ $(document).on('ready', function(){
         columns: getColumnsGridQuestionOption,
         editable: "popup"
     });
-    var dialog = $('#dialog-update-options');
+    var dialog = jQuery('#dialog-update-options');
     dialog.kendoWindow({
         width: "615px",
         height: "400px",
@@ -178,24 +223,7 @@ $(document).on('ready', function(){
         modal: true,
         visible: false
     });
-
-    function editOptions(e) {
-        e.preventDefault();
-        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-        var qo_id = dataItem.id;
-        
-
-        if(dataItem.type != 1 && dataItem.type != 2) {
-            var kendoWindow = dialog.data("kendoWindow");
-            kendoWindow.refresh(crudServiceBaseUrl + "&view=optionquestion&tmpl=component&qo_id="+qo_id);
-            kendoWindow.center();
-            kendoWindow.open();
-        }
-    }
-
     /**
      * END Scripts Questions After
      *********************************************************************************/
-
-
-});
+}

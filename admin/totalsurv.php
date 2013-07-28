@@ -35,7 +35,7 @@ $controller = JControllerLegacy::getInstance('TotalSurv');
 
 if($task && (bool)strpos($task,'.')) {
 	list($controller,$execute) = explode('.',$task);
-	$controller = JControllerLegacy::getInstance($controller);
+	$controller = JControllerLegacy::getInstance(ucfirst($controller));
 }
 // Perform the Request task
 $controller->execute($execute);

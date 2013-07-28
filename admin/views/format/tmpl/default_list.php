@@ -9,8 +9,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
-// load tooltip behavior
-JHtml::_('behavior.tooltip');
 ?>
 <form action="<?php echo URL_HOME_ADMIN; ?>" method="post" name="adminForm" id="adminForm">
     	<div id="grid_formats"></div>

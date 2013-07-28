@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
  
 /**
- * Format Model
+ * QuestionOption Model
  */
 class TotalSurvModelQuestionOption extends JModelAdmin
 {
@@ -66,6 +66,40 @@ class TotalSurvModelQuestionOption extends JModelAdmin
     
     function load($qid = 0) {
 
+    }
+
+    function loadQuestionsOptionByFormat($fid) {
+
+    	$db = JFactory::getDbo();
+
+    	$table_qo = TotalSurvCustomFunctions::getNameTableQuestionsOption();
+    	$table_o = TotalSurvCustomFunctions::getNameTableOptionsQuestion();
+
+		$alias = 'qo_';
+
+    	$columns_qo = TotalSurvCustomFunctions::getColumnsTableQuestionsOption(true,'qo.',$alias);
+    	$columns_o = TotalSurvCustomFunctions::getColumnsTableOptionsQuestion(true,'o.');
+
+    	$query = 'SELECT '.$columns_qo.','.$columns_o.' FROM '.$table_qo.' qo RIGHT JOIN '.$table_o.' o ON o.question_option=qo.id WHERE qo.format=\''.$fid.'\' ORDER BY qo.ordered ASC, o.ordered ASC;';
+
+    	$db->setquery($query);
+    	$result = $db->loadAssocList();
+
+    	$all = array();
+    	
+    	$arr_columns_q = TotalSurvCustomFunctions::getColumnsTableQuestionsOption(false,$alias);
+    	
+    	foreach($result as $row) {
+
+    		$dataOption = array_merge($row,$arr_columns_q);
+    		$dataOption = array_filter($dataOption);
+
+    		$arr2 = array($row[$alias.'id'].':'.$row[$alias.'name'] => array($dataOption));
+			$all = array_merge_recursive($all,$arr2);
+
+    	}
+    	
+    	return $all;
     }
     
     function store($data = null) {

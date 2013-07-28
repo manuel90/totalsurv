@@ -65,23 +65,30 @@ class TotalSurvControllerFormat extends JControllerAdmin
         
         $this->add();
     }
-    function apply() {
-        
-        /**
-         * code save
-         * */
-         
+    function apply($redirect = true) {
+
+        $fid = JRequest::getVar('fid',$fid);
+        $format = JRequest::getVar('dataformat',array());
+        if( empty($format) ) {
+            $this->setRedirect('index.php?option=com_totalsurv&view=format&layout=edit&fid='.$fid,JText::_('VIEW_FORMAT_MSG_FORMAT_SAVE_ERROR'));
+            return;
+        }
+        $model = $this->getModel('format');
+        $result = $model->store($format);
+        if( empty($result) ) {
+            $this->setRedirect('index.php?option=com_totalsurv&view=format&layout=edit&fid='.$fid,JText::_('VIEW_FORMAT_MSG_FORMAT_SAVE_ERROR')); 
+        }
+        if($redirect) {
+            $this->setRedirect('index.php?option=com_totalsurv&view=format&layout=edit&fid='.$fid,JText::_('VIEW_FORMAT_MSG_FORMAT_SAVE_SUCCESS')); 
+        }
     }
     function save() {
         
-        /**
-         * code save
-         * */
-        
-        $this->home();
+        $this->apply(false);
+        $this->cancel(JText::_('VIEW_FORMAT_MSG_FORMAT_SAVE_SUCCESS'));
     }
-    function cancel() {
-        $this->setRedirect(URL_HOME_ADMIN.'&view=format');
+    function cancel($message = null) {
+        $this->setRedirect(URL_HOME_ADMIN.'&view=format', $message);
     }
 
     function allformats() {

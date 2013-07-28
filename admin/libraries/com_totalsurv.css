@@ -1,10 +1,18 @@
 .row-form { display: block;margin: 10px 0; }
 
 .row-form > div { display: inline-table; }
-.row-form .label { min-width: 150px;text-align: right;margin-right: 10px; }
+.row-form .label { width: 150px;text-align: right;margin-right: 10px; }
 .row-form .input { min-width: 300px; }
 
 .form-totalsurv .column { display: inline-table; }
 
 .form-totalsurv #inputs-format { min-width: 500px; }
 .form-totalsurv #panel-edit-format { width: 500px; }
+span.k-tooltip.k-invalid-msg { position: relative;z-index: 9999; }
+span.k-tooltip.k-invalid-msg .k-icon { height: 15px; }
+.tsurv-container { display: block; }
+.tsurv-container .row-fluid { display: table; }
+.tsurv-container .span4 { display: inline-table;width: 400px; }
+.tsurv-container .text-center { text-align: center; }
+
+.loading-uniform { background: transparent url("./kendoui/styles/Uniform/loading-image.gif") no-repeat center center;min-height: 400px; } 
