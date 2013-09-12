@@ -25,15 +25,9 @@ class TotalSurvViewFormat extends JViewLegacy
 	 */
 	public function display($tpl = null) {
 
-		$layout = JRequest::getCmd('layout','list');
-
-		
+		$layout = JRequest::getCmd('layout','default');
         $model = $this->getModel();
-        
-        
-
         $document = JFactory::getDocument();
-
 
 		if($layout == 'edit') {
 			$fid = JRequest::getInt('fid', 0);
@@ -43,19 +37,17 @@ class TotalSurvViewFormat extends JViewLegacy
 			$document->addScriptDeclaration('var getColumnsGridQuestion = ['.TotalSurvCustomFunctions::getColumnsGridQuestion(true).'];');
 			$document->addScriptDeclaration('var getColumnsGridQuestionOption = ['.TotalSurvCustomFunctions::getColumnsGridQuestionOption(true).'];');
 
-			JText::script('LAYOUT_EDIT_UPDATE_OPTIONS');
+			TotalSurvCustomFunctions::script('LAYOUT_EDIT_UPDATE_OPTIONS');
 			
 		} else {
-
 			/**
 			 * List General to the formats
 			 ***/
-			JText::script('VIEW_FORMAT_LABEL_EDIT');
-			JText::script('VIEW_FORMAT_LABEL_DELETE');
+			TotalSurvCustomFunctions::script('VIEW_FORMAT_LABEL_EDIT');
+			TotalSurvCustomFunctions::script('VIEW_FORMAT_LABEL_DELETE');
 
 			$document->addScriptDeclaration('var getColumnsGridFormat = ['.TotalSurvCustomFunctions::getColumnsGridFormat(true).'];');
 			$document->addScriptDeclaration('var tsurv_url_edit_format = \''.URL_HOME_ADMIN.'&view=format&layout=edit&fid={fid}\';');
-						
 		}
 
         
@@ -78,13 +70,10 @@ class TotalSurvViewFormat extends JViewLegacy
 		$userId = $user->id;
 		$isNew = $this->format['id'] == 0;
 		
-        $layout = JRequest::getCmd('layout','list');
-        if($layout == 'list') {
+        $layout = JRequest::getCmd('layout','default');
+        if($layout == 'default') {
             JToolBarHelper::title(JText::_('VIEW_FORMAT_LABEL_TITLE_LIST'));
             JToolBarHelper::custom('format.home', 'home.png', 'home_f2.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
-            JToolBarHelper::custom('format.add', 'new.png', 'new_f2.png', 'VIEW_FORMAT_LABEL_NEW', false);
-            JToolBarHelper::custom('format.publish', 'publish.png', 'publish_f2.png', 'VIEW_FORMAT_LABEL_PUBLISH', false);
-            JToolBarHelper::custom('format.unpublish', 'unpublish.png', 'unpublish_f2.png', 'VIEW_FORMAT_LABEL_UNPUBLISH', false);
             return;
         }
         JRequest::setVar('hidemainmenu', true);

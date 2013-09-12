@@ -65,7 +65,16 @@ class TotalSurvModelQuestion extends JModelAdmin
 	}
     
     function load($qid = 0) {
-
+    	if( empty($qid) ) {
+            return null;
+        }
+        $table = $this->getTable();
+        
+        if($table->load($qid)) {
+            $load = TotalSurvCustomFunctions::parse_args($table);
+            return $load;
+        }
+        return null;
     }
     
     function store($data = null) {
@@ -92,6 +101,22 @@ class TotalSurvModelQuestion extends JModelAdmin
         }
         $table = $this->getTable();
         return $table->delete($qid);
+    }
+
+    function loadQuestionsByFormat($fid) {
+
+    	$db = JFactory::getDbo();
+
+    	$table_q = TotalSurvCustomFunctions::getNameTableQuestions();
+
+    	$columns_q = TotalSurvCustomFunctions::getColumnsTableQuestions(true,'q.');
+
+    	$query = 'SELECT '.$columns_q.' FROM '.$table_q.' q WHERE q.published=\'1\' AND q.format=\''.$fid.'\' ORDER BY q.ordered ASC;';
+
+    	$db->setQuery($query);
+    	$result = $db->loadAssocList();
+    	
+    	return $result;
     }
 
 }

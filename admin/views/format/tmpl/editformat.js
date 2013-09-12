@@ -150,7 +150,7 @@ function init_editformat_js() {
         }
     });
     getColumnsGridQuestionOption.push({ command: ["edit", "destroy"], title: "&nbsp;", width: "160px" });
-    getColumnsGridQuestionOption.push({ command: { text: Joomla.JText.strings.LAYOUT_EDIT_UPDATE_OPTIONS, click: editOptions }, title: '', width: '120px' });
+    getColumnsGridQuestionOption.push({ command: { text: TotalSurvLang.LAYOUT_EDIT_UPDATE_OPTIONS, click: editOptions }, title: '', width: '120px' });
     jQuery("#grid-questionsoption-before").kendoGrid({
         dataSource: dataSource,
         pageable: true,

@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted Access');
         </div>
         <div class="span4 text-center">
             <img src="<?php echo URL_FOLDER_ADMIN; ?>/views/totalsurv/tmpl/images/icon-view-graph-line.png" class="img-rounded" />
-            <p class="text-center"><a href=""><?php echo JText::_('VIEW_TOTALSURV_LABEL_FORMAT_VIEW'); ?></a></p>
+            <p class="text-center"><a href="<?php echo URL_HOME_ADMIN; ?>&view=tendency"><?php echo JText::_('VIEW_TOTALSURV_LABEL_TENDENCIES'); ?></a></p>
         </div>
         <div class="span4 text-center">
             <img src="<?php echo URL_FOLDER_ADMIN; ?>/views/totalsurv/tmpl/images/icon-view-graph-bar.png" class="img-rounded" />

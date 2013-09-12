@@ -27,13 +27,17 @@ class TotalSurvCustomFunctions {
         $controller = JControllerLegacy::getInstance('TotalSurv');
         return $controller;
     }
-    public static function parse_args($data,$default) {
+    public static function parse_args($data,$default = array()) {
         if(is_object($data)) {
             $data = get_object_vars($data);
         }
         return array_merge($default,$data);
     }
-
+    public static function script($text) {
+        $txt = JText::_($text);
+        $document = JFactory::getDocument();
+        $document->addScriptDeclaration('TotalSurvLang.'.$text.' = "'.$txt.'";');
+    }
     public static function load() {
 
         $document = JFactory::getDocument();
@@ -62,11 +66,20 @@ class TotalSurvCustomFunctions {
         $kendo_style = KENDOUI_STYLE;
         $vars_js = <<<JS
         kendo.culture("es-ES");
+        var TotalSurvLang = {};
         var crudServiceBaseUrl = '$crudServiceBaseUrl';
         var kendoui_style = '$kendo_style';
 JS;
         $document->addScriptDeclaration($vars_js);
     
+    }
+
+    public static function loadHighcharts($add_exporting = false) {
+        $document = JFactory::getDocument();
+        $document->addScript(URL_FOLDER_ADMIN.'/libraries/highchart/js/highcharts.js');
+        if($add_exporting) {
+            $document->addScript(URL_FOLDER_ADMIN.'/libraries/highchart/js/modules/exporting.js');
+        }
     }
 
     /**

@@ -1,3 +1,4 @@
+ul, ol { list-style-type: none; }
 .row-form { display: block;margin: 10px 0; }
 
 .row-form > div { display: inline-table; }
@@ -15,4 +16,10 @@ span.k-tooltip.k-invalid-msg .k-icon { height: 15px; }
 .tsurv-container .span4 { display: inline-table;width: 400px; }
 .tsurv-container .text-center { text-align: center; }
 
-.loading-uniform { background: transparent url("./kendoui/styles/Uniform/loading-image.gif") no-repeat center center;min-height: 400px; } 
+.loading-uniform { background: transparent url("./kendoui/styles/Uniform/loading-image.gif") no-repeat center center;min-height: 400px; }
+
+.page-print { padding: 5px 15px; }
+
+.k-title { text-align: center;font-size: 17px; }
+.k-center { text-align: center; }
+.k-subtitle { font-size: 14px; }

@@ -15,7 +15,7 @@ $today = date('Y-m-d');
 <script type="text/javascript">var data_filter = { dstart: '<?php echo $today; ?>', dend: '<?php echo $today; ?>', fid: '<?php echo $this->format['id']; ?>'}; </script>
 <div id="tsurv-totals">
 	<div class="head">
-		<h3><?php echo $this->format['name']; ?></h3>
+		<h3 class="k-title"><?php echo $this->format['name']; ?></h3>
 		<div id="filters">
 			<div class="range-date" style="width:470px">
                 <label for="start"><?php echo JText::_('VIEW_TOTAL_LABEL_START_DATE'); ?></label>

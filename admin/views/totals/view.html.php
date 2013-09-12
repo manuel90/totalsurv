@@ -41,13 +41,13 @@ class TotalSurvViewTotals extends JViewLegacy
         	
         	$document->addScriptDeclaration('var getColumnsGridTotals = ['.TotalSurvCustomFunctions::getColumnsGridTotals($format['id'],true,'').'];');
 
-        	JText::script('VIEW_TOTAL_LABEL_SHOW_COMMENT');        	
+        	TotalSurvCustomFunctions::script('VIEW_TOTAL_LABEL_SHOW_COMMENT');        	
 
         	$this->assignRef('questions_option',$questions_options);
         	$this->assignRef('format',$format);
 
         } else {
-        	JText::script('VIEW_TOTAL_LABEL_BTN_SHOW_TABLE_RESULTS');
+        	TotalSurvCustomFunctions::script('VIEW_TOTAL_LABEL_BTN_SHOW_TABLE_RESULTS');
 			$document->addScriptDeclaration('var getColumnsGridFormat = ['.TotalSurvCustomFunctions::getColumnsGridFormat(true,'',true).'];');
         }
 		// Set the toolbar
@@ -66,43 +66,15 @@ class TotalSurvViewTotals extends JViewLegacy
 		
 		$user = JFactory::getUser();
 		$userId = $user->id;
-		$isNew = $this->format['id'] == 0;
 		
         $layout = JRequest::getCmd('layout','list');
         if($layout == 'list') {
             JToolBarHelper::title(JText::_('VIEW_FORMAT_LABEL_TITLE_LIST'));
             JToolBarHelper::custom('totals.home', 'home.png', 'home_f2.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
-            JToolBarHelper::custom('totals.add', 'new.png', 'new_f2.png', 'VIEW_FORMAT_LABEL_NEW', false);
-            JToolBarHelper::custom('totals.publish', 'publish.png', 'publish_f2.png', 'VIEW_FORMAT_LABEL_PUBLISH', false);
-            JToolBarHelper::custom('totals.unpublish', 'unpublish.png', 'unpublish_f2.png', 'VIEW_FORMAT_LABEL_UNPUBLISH', false);
-            return;
+        } else {
+        	JToolBarHelper::title(JText::_('VIEW_TOTAL_TITLE_TOTALS'));
+            JToolBarHelper::custom('totals.back', 'home.png', 'home_f2.png', 'COM_TOTALSURV_LABEL_BACK', false);
         }
-        JRequest::setVar('hidemainmenu', true);
-        
-        $canDo = TotalSurvHelper::getActions($this->format->id);
-		JToolBarHelper::title($isNew ? JText::_('VIEW_FORMAT_LABEL_TITLE_NEW') : JText::_('VIEW_FORMAT_LABEL_TITLE_EDIT'), 'format');
-		// Built the actions for new and existing records.
-		if ($isNew) 
-		{
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) 
-			{
-				JToolBarHelper::apply('totals.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('totals.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('totals.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-			JToolBarHelper::cancel('totals.cancel', 'JTOOLBAR_CANCEL');
-		}
-		else
-		{
-			if ($canDo->get('core.edit'))
-			{
-				// We can save the new record
-				JToolBarHelper::apply('totals.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('totals.save', 'JTOOLBAR_SAVE');
-			}
-			JToolBarHelper::cancel('totals.cancel', 'JTOOLBAR_CLOSE');
-		}
 	}
 	/**
 	 * Method to set up the document properties
@@ -111,8 +83,9 @@ class TotalSurvViewTotals extends JViewLegacy
 	 */
 	protected function setDocument() 
 	{
-		$isNew = $this->format->id == 0;
+		$layout = JRequest::getCmd('layout','list');
+		$isList = $layout == 'list';
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_TOTALSURV_TOTALSURV_CREATING') : JText::_('COM_TOTALSURV_TOTALSURV_EDITING'));
+		$document->setTitle($isList ? JText::_('VIEW_FORMAT_LABEL_TITLE_LIST') : JText::_('VIEW_TOTAL_TITLE_TOTALS'));
 	}
 }

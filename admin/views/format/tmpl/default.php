@@ -9,7 +9,13 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
-
-
-echo $this->loadTemplate('list'); 
 ?>
+<form action="<?php echo URL_HOME_ADMIN; ?>" method="post" name="adminForm" id="adminForm">
+    	<div id="grid_formats"></div>
+    	<div>
+    		<input type="hidden" name="task" value="" />
+    		<input type="hidden" name="boxchecked" value="0" />
+    		<?php echo JHtml::_('form.token'); ?>
+    	</div>
+</form>
+<script type="text/javascript" src="<?php echo URL_FOLDER_ADMIN.'/views/format/tmpl/default.js'; ?>"></script>

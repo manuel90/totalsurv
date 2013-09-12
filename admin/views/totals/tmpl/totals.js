@@ -124,7 +124,7 @@ function init_totals_js() {
     };
 
     updateSFilter();
-    getColumnsGridTotals.push({command: {text:Joomla.JText.strings.VIEW_TOTAL_LABEL_SHOW_COMMENT, click: showComment}, title: '', width: '300px'});
+    getColumnsGridTotals.push({command: {text: TotalSurvLang.VIEW_TOTAL_LABEL_SHOW_COMMENT, click: showComment}, title: '', width: '300px'});
     
     var fqo = jQuery('.filter-question-option');
 

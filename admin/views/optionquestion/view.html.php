@@ -14,23 +14,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
  
 /**
- * Format View
+ * OptionQuestion View
  */
 class TotalSurvViewOptionQuestion extends JViewLegacy
 {
 	/**
-	 * display method of Format view
+	 * display method of OptionQuestion view
 	 * @return void
 	 */
 	public function display($tpl = null) {
 
-		$layout = JRequest::getCmd('layout','');
+		$document = JFactory::getDocument();
 
 		$qo_id = JRequest::getInt('qo_id', 0);
-		
-        $model = $this->getModel();
 
-        $this->assignRef('qo_id',$qo_id);
+		$document->addScriptDeclaration('var getColumnsGridOptionsQuestion = ['.TotalSurvCustomFunctions::getColumnsGridOptionsQuestion(true).'];'.
+										'var question_option = '.json_encode($qo_id).';');
+
 		parent::display($tpl);
 	}
 }

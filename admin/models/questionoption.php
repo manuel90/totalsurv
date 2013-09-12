@@ -65,7 +65,16 @@ class TotalSurvModelQuestionOption extends JModelAdmin
 	}
     
     function load($qid = 0) {
-
+    	if( empty($qid) ) {
+            return null;
+        }
+        $table = $this->getTable();
+        
+        if($table->load($qid)) {
+            $load = TotalSurvCustomFunctions::parse_args($table);
+            return $load;
+        }
+        return null;
     }
 
     function loadQuestionsOptionByFormat($fid) {
@@ -82,7 +91,7 @@ class TotalSurvModelQuestionOption extends JModelAdmin
 
     	$query = 'SELECT '.$columns_qo.','.$columns_o.' FROM '.$table_qo.' qo RIGHT JOIN '.$table_o.' o ON o.question_option=qo.id WHERE qo.format=\''.$fid.'\' ORDER BY qo.ordered ASC, o.ordered ASC;';
 
-    	$db->setquery($query);
+    	$db->setQuery($query);
     	$result = $db->loadAssocList();
 
     	$all = array();

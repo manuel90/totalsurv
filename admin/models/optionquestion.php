@@ -65,7 +65,16 @@ class TotalSurvModelOptionQuestion extends JModelAdmin
 	}
     
     function load($opid = 0) {
-
+    	if( empty($opid) ) {
+            return null;
+        }
+        $table = $this->getTable();
+        
+        if($table->load($opid)) {
+            $load = TotalSurvCustomFunctions::parse_args($table);
+            return $load;
+        }
+        return null;
     }
     
     function store($data = null) {
