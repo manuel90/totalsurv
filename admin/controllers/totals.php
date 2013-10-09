@@ -70,13 +70,6 @@ class TotalSurvControllerTotals extends JControllerAdmin
         $this->setRedirect(URL_HOME_ADMIN.'&view=totals', $message);
     }
 
-    function allformats() {
-        $model = $this->getModel('format');
-        $data = $model->get_all_formats();
-        echo json_encode($data);
-        die();
-    }
-
     function ajaxGetTotals() {
 
         $result = array();

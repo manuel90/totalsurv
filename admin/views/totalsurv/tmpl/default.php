@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted Access');
         </div>
         <div class="span4 text-center">
             <img src="<?php echo URL_FOLDER_ADMIN; ?>/views/totalsurv/tmpl/images/icon-view-format.png" class="img-rounded" />
-            <p class="text-center"><a href="<?php echo URL_HOME_ADMIN; ?>&view=totals"><?php echo JText::_('VIEW_TOTALSURV_LABEL_FORMAT_VIEW'); ?></a></p>
+            <p class="text-center"><a href="<?php echo URL_HOME_ADMIN; ?>&view=totals"><?php echo JText::_('VIEW_TOTALSURV_LABEL_TOTALS_VIEW'); ?></a></p>
         </div>
         <div class="span4 text-center">
             <img src="<?php echo URL_FOLDER_ADMIN; ?>/views/totalsurv/tmpl/images/icon-view-format.png" class="img-rounded" />
@@ -30,11 +30,11 @@ defined('_JEXEC') or die('Restricted Access');
         </div>
         <div class="span4 text-center">
             <img src="<?php echo URL_FOLDER_ADMIN; ?>/views/totalsurv/tmpl/images/icon-view-graph-bar.png" class="img-rounded" />
-            <p class="text-center"><a href=""><?php echo JText::_('VIEW_TOTALSURV_LABEL_FORMAT_VIEW'); ?></a></p>
+            <p class="text-center"><a href="<?php echo URL_HOME_ADMIN; ?>&view=graphs&gtype=graphbar"><?php echo JText::_('VIEW_TOTALSURV_LABEL_LAYOUT_GRAPHBAR'); ?></a></p>
         </div>
         <div class="span4 text-center">
             <img src="<?php echo URL_FOLDER_ADMIN; ?>/views/totalsurv/tmpl/images/icon-view-graph-pie.png" class="img-rounded" />
-            <p class="text-center"><a href=""><?php echo JText::_('VIEW_TOTALSURV_LABEL_FORMAT_VIEW'); ?></a></p>
+            <p class="text-center"><a href="<?php echo URL_HOME_ADMIN; ?>&view=graphs&gtype=graphpie"><?php echo JText::_('VIEW_TOTALSURV_LABEL_LAYOUT_GRAPHPIE'); ?></a></p>
         </div>
     </div>
 </div>

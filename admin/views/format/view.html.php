@@ -73,7 +73,7 @@ class TotalSurvViewFormat extends JViewLegacy
         $layout = JRequest::getCmd('layout','default');
         if($layout == 'default') {
             JToolBarHelper::title(JText::_('VIEW_FORMAT_LABEL_TITLE_LIST'));
-            JToolBarHelper::custom('format.home', 'home.png', 'home_f2.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
+            JToolBarHelper::custom('format.home', 'home.png', 'home.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
             return;
         }
         JRequest::setVar('hidemainmenu', true);

@@ -10,7 +10,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 
-$today = date('Y-m');
+$today = date('Y-m-d');
 ?>
 <script type="text/javascript">var data_filter = { dstart: '<?php echo $today; ?>', dend: '<?php echo $today; ?>', fid: '<?php echo $this->format['id']; ?>'}; </script>
 <div id="tsurv-tendency">
@@ -40,29 +40,14 @@ $today = date('Y-m');
             		}
             	?>
             </div>
-            <div class="list-questions">
-                <?php
-                if( !empty($this->questions) ) {
-                    echo '<ul>';
-                    foreach($this->questions as $question) {
-                        echo '<li>';
-                        echo '<label><input class="select-questions" type="radio" name="question" value="'.$question['id'].'" />'.$question['name'].'</label>';
-                        echo '</li>';
-                    }
-                    echo '</ul>';
-                }
-                ?>
-            </div>
 		</div>
 		<button id="load-results" class="k-button"><?php echo JText::_('VIEW_TOTAL_LABEL_BTN_SHOW_RESULTS'); ?></button>
-		<div id="temp"></div>
 	</div>
 	<div id="results"></div>
     <iframe id="graph" width="100%" height="550px" src=""></iframe>
-    <div id="message" style="display: none;"><?php echo JText::_('VIEW_TENDENCY_MESSAGE_NOT_SELECTED_QUESTION'); ?></div>
-	<form id="" action="<?php echo URL_HOME_ADMIN.'&view=tendency&layout=tendency&fid='.(int)$this->format['id']; ?>" method="post" name="adminForm">
+	<form id="" action="<?php echo URL_HOME_ADMIN.'&view=graphs'; ?>" method="post" name="adminForm">
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
 	</form>
-	<script type="text/javascript" src="<?php echo URL_FOLDER_ADMIN.'/views/tendency/tmpl/tendency.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo URL_FOLDER_ADMIN.'/views/graphs/tmpl/graph.js'; ?>"></script>
 </div>

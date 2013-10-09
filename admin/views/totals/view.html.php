@@ -70,10 +70,10 @@ class TotalSurvViewTotals extends JViewLegacy
         $layout = JRequest::getCmd('layout','list');
         if($layout == 'list') {
             JToolBarHelper::title(JText::_('VIEW_FORMAT_LABEL_TITLE_LIST'));
-            JToolBarHelper::custom('totals.home', 'home.png', 'home_f2.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
+            JToolBarHelper::custom('totals.home', 'home.png', 'home.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
         } else {
         	JToolBarHelper::title(JText::_('VIEW_TOTAL_TITLE_TOTALS'));
-            JToolBarHelper::custom('totals.back', 'home.png', 'home_f2.png', 'COM_TOTALSURV_LABEL_BACK', false);
+            JToolBarHelper::custom('totals.back', 'back.png', 'back.png', 'COM_TOTALSURV_LABEL_BACK', false);
         }
 	}
 	/**

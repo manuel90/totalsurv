@@ -15,9 +15,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
  
 /**
- * Tendency Controller
+ * Graphs Controller
  */
-class TotalSurvControllerTendency extends JControllerAdmin
+class TotalSurvControllerGraphs extends JControllerAdmin
 {
     function home() {
         $this->setRedirect(URL_HOME_ADMIN);
@@ -26,6 +26,6 @@ class TotalSurvControllerTendency extends JControllerAdmin
         $this->cancel();
     }
     function cancel($message = null) {
-        $this->setRedirect(URL_HOME_ADMIN.'&view=tendency', $message);
+        $this->setRedirect(URL_HOME_ADMIN.'&view=graphs', $message);
     }
 }

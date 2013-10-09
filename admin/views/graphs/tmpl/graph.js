@@ -1,6 +1,6 @@
-jQuery(document).on('ready', init_tendency_js);
+jQuery(document).on('ready', init_graph_js);
 
-function init_tendency_js() {
+function init_graph_js() {
 
     var sfilter = '';
     
@@ -89,22 +89,12 @@ function init_tendency_js() {
         updateSFilter();
     };
     var load_result_search = function() {
-
-        var question = jQuery(".select-questions:checked");
-
-        if(question.is(':checked')) {
-            var question_val = question.val();
-            var url_result = "index.php?option=com_totalsurv&view=tendency&layout=graphline&tmpl=component&pgraph[fid]="+data_filter.fid+"&pgraph[question]="+question_val+"&pgraph[dstart]="+data_filter.dstart+"&pgraph[dend]="+data_filter.dend+"";
-            if(typeof(data_filter.question_option) != "undefined") {
-                url_result += "&pgraph[questionoption]="+data_filter.question_option.id+"&pgraph[option]="+data_filter.question_option.option+"";
-            }
-            jQuery("#graph").attr('src', url_result);
-        } else {
             
-            var dialog = message.data("kendoWindow");
-            dialog.center();
-            dialog.open();
+        var url_result = "index.php?option=com_totalsurv&view=graphs&layout=chart&gtype="+graphtype+"&tmpl=component&pgraph[fid]="+data_filter.fid+"&pgraph[dstart]="+data_filter.dstart+"&pgraph[dend]="+data_filter.dend+"";
+        if(typeof(data_filter.question_option) != "undefined") {
+            url_result += "&pgraph[questionoption]="+data_filter.question_option.id+"&pgraph[option]="+data_filter.question_option.option+"";
         }
+        jQuery("#graph").attr('src', url_result);
         
     };
 
@@ -120,16 +110,12 @@ function init_tendency_js() {
 
     var start = jQuery("#start").kendoDatePicker({
         change: startChange,
-        format: "yyyy-MM",
-        start: "year",
-        depth: "year"
+        format: "yyyy-MM-dd"
     }).data("kendoDatePicker");
 
     var end = jQuery("#end").kendoDatePicker({
         change: endChange,
-        format: "yyyy-MM",
-        start: "year",
-        depth: "year"
+        format: "yyyy-MM-dd"
     }).data("kendoDatePicker");
 
     start.max(end.value());

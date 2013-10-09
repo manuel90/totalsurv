@@ -34,6 +34,8 @@ class TotalSurvViewTendency extends JViewLegacy
 
         	TotalSurvCustomFunctions::loadHighcharts();
 
+        	TotalSurvCustomFunctions::script('COM_TOTALSURV_LABEL_MESSAGE');
+        	
         	$controller = TotalSurvCustomFunctions::getController();
         	$model_format = $controller->getModel('format');
         	$format = $model_format->load($fid);
@@ -85,7 +87,7 @@ class TotalSurvViewTendency extends JViewLegacy
         	$this->assignRef('title', $title);
         	$this->assignRef('subtitle', $sub_title);
         } else {
-        	JText::script('VIEW_TENDENCY_LABEL_BTN_SHOW_TENDENCY');
+        	TotalSurvCustomFunctions::script('VIEW_TENDENCY_LABEL_BTN_SHOW_TENDENCY');
 			$document->addScriptDeclaration('var getColumnsGridFormat = ['.TotalSurvCustomFunctions::getColumnsGridFormat(true,'',true).'];');
         }
 		// Set the toolbar
@@ -102,17 +104,14 @@ class TotalSurvViewTendency extends JViewLegacy
 	protected function addToolBar() 
 	{
 		
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		
-        $layout = JRequest::getCmd('layout','list');
-        if($layout == 'list') {
+        $layout = JRequest::getCmd('layout','default');
+        if($layout == 'default') {
             JToolBarHelper::title(JText::_('VIEW_FORMAT_LABEL_TITLE_LIST'));
             JToolBarHelper::custom('tendency.home', 'home.png', 'home_f2.png', 'VIEW_FORMAT_LABEL_GO_TO_HOME', false);
         } else {
         	JRequest::setVar('hidemainmenu', true);
         	JToolBarHelper::title(JText::_('VIEW_TENDENCY_TITLE_TENDENCY'));
-            JToolBarHelper::custom('tendency.back', 'home.png', 'home_f2.png', 'COM_TOTALSURV_LABEL_BACK', false);
+            JToolBarHelper::custom('tendency.back', 'back.png', 'back.png', 'COM_TOTALSURV_LABEL_BACK', false);
         }
         
 	}
